@@ -22,7 +22,7 @@ abstract class CreateTableMigration extends \yii\db\Migration
     /**
      * @var string default action update used when creating foreign keys.
      */
-    public $defaultOnDelete = 'CASCADE';
+    public $defaultOnUpdate = 'CASCADE';
 
     /**
      * Table name used to generate the migration.
