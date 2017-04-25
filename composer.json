@@ -1,0 +1,29 @@
+{
+    "name": "tecnocen/yii2-migrate",
+    "description": "Yii 2 Library to handle normalized table creation",
+    "keywords": [
+        "yii2",
+        "framework",
+        "advanced",
+        "migration",
+        "migrate"
+    ],
+    "type": "library",
+    "license": "BSD-3-Clause",
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.5",
+        "yiisoft/yii2": "~2.0.10"
+    },
+    "require-dev": {
+        "codeception/base": "^2.2.3",
+        "codeception/verify": "~0.3.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "tecnocen\\migrate\\": "src/"
+        }
+    }
+}
+
+
