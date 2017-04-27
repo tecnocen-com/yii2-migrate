@@ -118,7 +118,7 @@ abstract class CreateTableMigration extends \yii\db\Migration
         ), $tableOptions);
 
         $columns = $this->compositePrimaryKeys();
-        if (!empty($compositePrimaryKeys)) {
+        if (!empty($columns)) {
             $this->addPrimaryKey(
                 "{{%pk-{$this->tableName}}}",
                 $this->prefixedTableName,
@@ -139,7 +139,6 @@ abstract class CreateTableMigration extends \yii\db\Migration
             $this->foreignKeys(),
             $this->defaultForeignKeys()
         ));
-        $this->upDefaultKeys();
     }
 
     /**
