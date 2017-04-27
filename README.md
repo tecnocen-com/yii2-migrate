@@ -16,7 +16,7 @@ or edit the `composer.json` file
 
 ```json
 require: {
-    "tecnocen/migrate": "*",
+    "tecnocen/yii2-migrate": "*",
 }
 ```
 
