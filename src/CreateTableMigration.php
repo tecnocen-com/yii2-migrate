@@ -224,23 +224,38 @@ abstract class CreateTableMigration extends \yii\db\Migration
     {
         $table = $this->getTableName();
         foreach ($keys as $columnName => $reference) {
-            $refTable = $reference['table'];
-            $refColumn = ArrayHelper::getValue($reference, 'column', 'id');
+            if (is_string($reference)) {
+                $refTable = $reference;
+                $refColumns = ['id'];
+                $columns = [$columnName];
+            } else {
+                $refTable = $reference['table'];
+                $refColumns = ArrayHelper::getValue(
+                    $reference,
+                    'column',
+                    ['id']
+                );
+                $columns = ArrayHelper::getValue(
+                    $refference,
+                    'sourceColumns',
+                    [$columnName]
+                );
+            }
 
             // creates index for column
             $this->createIndex(
                 "{{%idx-$table-$columnName}}",
                 $this->prefixedTableName,
-                $columnName
+                $columns
             );
 
             // creates the foreign key
             $this->addForeignKey(
                 "{{%fk-$table-$columnName}}",
                 $this->prefixedTableName,
-                $columnName,
+                $columns,
                 "{{%$refTable}}",
-                $refColumn
+                $refColumns
             );
         }
     }
