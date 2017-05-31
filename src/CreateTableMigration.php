@@ -50,31 +50,6 @@ abstract class CreateTableMigration extends \yii\db\Migration
     /**
      * @inheritdoc
      */
-    public function addForeignKey(
-     	$name,
-     	$table,
-     	$columns,
-     	$refTable,
-     	$refColumns,
-     	$delete = null,
-     	$update = null
-    ) {
-        $delete = $delete ?: $this->defaultOnDelete;
-        $update = $update ?: $this->defaultOnUpdate;
-        parent::addForeignKey(
-            $name,
-            $table,
-            $columns,
-            $refTable,
-            $refColumns,
-            $delete,
-            $update
-        );
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function primaryKey($length = self::DEFAULT_KEY_LENGTH)
     {
         return $this->normalKey($length)->append('AUTO_INCREMENT PRIMARY KEY');
@@ -228,6 +203,8 @@ abstract class CreateTableMigration extends \yii\db\Migration
                 $refTable = $reference;
                 $refColumns = ['id'];
                 $columns = [$columnName];
+                $onDelete = $this->defaultOnDelete;
+                $onUpdate = $this->defaultOnUpdate;
             } else {
                 $refTable = $reference['table'];
                 $refColumns = ArrayHelper::getValue(
@@ -236,9 +213,20 @@ abstract class CreateTableMigration extends \yii\db\Migration
                     ['id']
                 );
                 $columns = ArrayHelper::getValue(
-                    $refference,
+                    $reference,
                     'sourceColumns',
                     [$columnName]
+                );
+                
+                $onDelete = ArrayHelper::getValue(
+                    $reference,
+                    'onDelete',
+                    $this->defaultOnDelete
+                );
+                $onUpdate = ArrayHelper::getValue(
+                    $reference,
+                    'onUpdate',
+                    $this->defaultOnUpdate
                 );
             }
 
@@ -255,7 +243,9 @@ abstract class CreateTableMigration extends \yii\db\Migration
                 $this->prefixedTableName,
                 $columns,
                 "{{%$refTable}}",
-                $refColumns
+                $refColumns,
+                $onDelete,
+                $onUpdate
             );
         }
     }
