@@ -201,21 +201,15 @@ abstract class CreateTableMigration extends \yii\db\Migration
         foreach ($keys as $columnName => $reference) {
             if (is_string($reference)) {
                 $refTable = $reference;
-                $refColumns = ['id'];
-                $columns = [$columnName];
+                $columns = [$columnName => 'id'];
                 $onDelete = $this->defaultOnDelete;
                 $onUpdate = $this->defaultOnUpdate;
             } else {
                 $refTable = $reference['table'];
-                $refColumns = ArrayHelper::getValue(
-                    $reference,
-                    'column',
-                    ['id']
-                );
                 $columns = ArrayHelper::getValue(
                     $reference,
-                    'sourceColumns',
-                    [$columnName]
+                    'columns',
+                    [$columnName => 'id']
                 );
                 
                 $onDelete = ArrayHelper::getValue(
@@ -234,16 +228,16 @@ abstract class CreateTableMigration extends \yii\db\Migration
             $this->createIndex(
                 "{{%idx-$table-$columnName}}",
                 $this->prefixedTableName,
-                $columns
+                array_keys($columns)
             );
 
             // creates the foreign key
             $this->addForeignKey(
                 "{{%fk-$table-$columnName}}",
                 $this->prefixedTableName,
-                $columns,
+                array_keys($columns),
                 "{{%$refTable}}",
-                $refColumns,
+                array_values($columns),
                 $onDelete,
                 $onUpdate
             );
