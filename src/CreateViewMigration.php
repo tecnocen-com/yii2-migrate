@@ -36,7 +36,7 @@ abstract class CreateViewMigration extends \yii\db\Migration
      */
     private function quotedViewName()
     {
-        return $this->getDb()->quoteTableName('{{%' . $this->viewName() . '}}');
+        return $this->getDb()->quoteSql('{{%' . $this->viewName() . '}}');
     }
     
     /**
