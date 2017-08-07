@@ -24,6 +24,8 @@ require: {
 Usage
 -----
 
+### Create Table Migrations
+
 You can use the `tecnocen\migrate\CreateTableMigration` to generate different
 type of migration tables to be used by each of your table types.
 
@@ -135,3 +137,47 @@ the  columns.
 
 With a composite primary key of the columns `ticket_id` and `employee_id` and
 two foreign keys linked to the previous two columns.
+
+### Create View Migrations
+
+You can use the `tecnocen\migrate\CreateViewMigration` to generate SQL views
+migrations.
+
+```php
+use tecnocen\migrate\CreateViewMigration;
+use common\models\Ticket;
+
+class m17010101_010101_ticket_details extends CreateViewMigration
+{
+    /**
+     * @inheritdoc
+     */
+    public function viewName()
+    {
+       return 'ticket_details';
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function viewQuery()
+    {
+        return Ticket::find()
+            ->alias('t')
+            ->innerJoinWith([
+                'project' => function ($query) {
+                    $query->alias('p');
+                },
+            ])->select([
+                'ticket_id' => 't.id',
+                'project_id' => 'p.id',
+                'ticket_title' => 't.title',
+                'ticket_description' => 't.description',
+                'project_name' => 'p.name',t
+            ]);
+    }
+}
+```
+
+Where `viewName()` returns an string and `viewQuery()` return an instance of
+`yii\db\Query`
