@@ -6,6 +6,7 @@ namespace tecnocen\migrate;
  * Handles the creation for one view query.
  *
  * @author Angel (Faryshta) Guevara <aguevara@alquimiadigital.mx>
+ * @since 1.0.2
  */
 abstract class CreateViewMigration extends \yii\db\Migration
 {
